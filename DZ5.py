@@ -1,0 +1,151 @@
+# 1. Создать программно файл в текстовом формате, записать в него построчно данные, вводимые
+# пользователем. Об окончании ввода данных свидетельствует пустая строка.
+
+print('Задание 1')
+f = open('dz5.1.txt', 'w', encoding='utf-8')
+while True:
+    w_user = (input('Введите текст, который хотите поместить в строку. Если Вы захотите прекратить данное задание - введите пустую строку :\n'))
+    if w_user == ' ' or w_user == '':
+        break
+    f.write(w_user + "\n")
+f.close()
+print(open('dz5.1.txt', 'r', encoding='utf-8').read())
+
+# 2. Создать текстовый файл (не программно), сохранить в нем несколько строк, выполнить подсчет
+# количества строк, количества слов в каждой строке.
+print(30*'-', '\nЗадание 2')
+txt_str = open('dz5.2.txt', 'r+', encoding='utf-8')
+print(open('dz5.2.txt', 'r+', encoding='utf-8').read())
+for i, a in enumerate(txt_str, start=1):
+    print('в строке №{} будет  {} слов '.format(i, len(list(a.split()))))
+
+    #print(list(len(a.split()) for c in a.split() if len(c)>=2))
+    # не домыслил как убрать по длине предлоги и союзы - скорее всего исключить из текста надо
+
+# 3. Создать текстовый файл (не программно), построчно записать фамилии сотрудников и величину их окладов.
+# Определить, кто из сотрудников имеет оклад менее 20 тыс., вывести фамилии этих сотрудников.
+# Выполнить подсчет средней величины дохода сотрудников.
+print(30*'-', '\nЗадание 3')
+mid_sal = []
+with open('dz5.3.txt', 'r+', encoding='utf-8') as f:
+    for k in f.readlines():
+        emloyer, salary = k.split()
+        mid_sal.append(salary)
+        if int(salary)< 20000:
+                print(f'{emloyer} получает >20 тыс рублей и это всего {salary} рублей')
+print('Среднее число зарплаты получилось: {} рублей'.format(round(sum(map(int, mid_sal))/len(mid_sal))))
+
+# 4. Создать (не программно) текстовый файл со следующим содержимым:
+# One — 1
+# Two — 2
+# Three — 3
+# Four — 4
+# Необходимо написать программу, открывающую файл на чтение и считывающую построчно данные.
+# При этом английские числительные должны заменяться на русские. Новый блок строк должен записываться
+# в новый текстовый файл.
+print(30*'-', '\nЗадание 4. Оно проделано в файлах')
+with open('DZ5.4.txt', encoding='utf-8') as z4:
+    lines = z4.readlines()
+new_numb = {
+    1:'Один',
+    2:'Два',
+    3:'Три',
+    4:'Четыре'
+}
+with open('DZ5.4-1.txt', 'a', encoding='utf-8') as z4:
+    for line in lines:
+        if '1' in line.split():
+            line = line.replace('One', new_numb[1])
+        elif '2' in line:
+            line = line.replace('Two', new_numb[2])
+        elif '3' in line:
+            line = line.replace('Three', new_numb[3])
+        elif '4' in line:
+            line = line.replace('Four', new_numb[4])
+        z4.writelines(line)
+
+
+
+# логичнее было сделать словарь one:один, однако меня интересовало можно ли по цифре перебрать.
+# А вот перебор как сделать с автоматической заменой - не сообразил(
+
+# 5. Создать (программно) текстовый файл, записать в него программно набор чисел, разделенных пробелами.
+# Программа должна подсчитывать сумму чисел в файле и выводить ее на экран.
+print(30*'-', '\nЗадание 5')
+numbers = input('введите числа через пробел: ')
+with open(input('Файл: ')+'.txt', 'w+') as f:
+    f.write(numbers)
+    f.seek(0)
+    split_numb = f.readline().split()
+print('сумма будет равна: {}'.format(sum(map(int, split_numb))))
+
+# 6. Необходимо создать (не программно) текстовый файл, где каждая строка описывает учебный предмет
+# и наличие лекционных, практических и лабораторных занятий по этому предмету и их количество.
+# Важно, чтобы для каждого предмета не обязательно были все типы занятий. Сформировать словарь,
+# содержащий название предмета и общее количество занятий по нему. Вывести словарь на экран.
+# Примеры строк файла:
+# Информатика: 100(л) 50(пр) 20(лаб).
+# Физика: 30(л) — 10(лаб)
+# Физкультура: — 30(пр)
+#
+# Пример словаря:
+# {“Информатика”: 170, “Физика”: 40, “Физкультура”: 30}
+print(30*'-', '\nЗадание 6')
+with open('dz5-6.txt',  encoding='utf-8') as f:
+    while True:
+        try:
+            line = f.readline()
+            numb1 = []
+            subj = []
+            for g in line.split():
+                subj.append(g)
+                for i in g.split('('):
+                    if int(i.isdigit()):
+                        numb1.append(i)
+            print(subj[0], sum(map(int, numb1)))
+        except IndexError:
+                break
+
+
+    #r = (sum(map(int,g)) for g in i.split() if int(g.isalnum()))
+    #print(list(lambda x: type(x) is int for i in f.readline()))
+
+# 7. Создать (не программно) текстовый файл, в котором каждая строка должна содержать данные о фирме:
+# название, форма собственности, выручка, издержки.
+# Пример строки файла: firm_1 ООО 10000 5000.
+
+# Необходимо построчно прочитать файл, вычислить прибыль каждой компании, а также среднюю прибыль.
+# Если фирма получила убытки, в расчет средней прибыли ее не включать.
+
+# Далее реализовать список. Он должен содержать
+# словарь с фирмами и их прибылями, а также словарь со средней прибылью.
+# Если фирма получила убытки, также добавить ее в словарь (со значением убытков).
+# Пример списка: [{“firm_1”: 5000, “firm_2”: 3000, “firm_3”: 1000}, {“average_profit”: 2000}].
+# Итоговый список сохранить в виде json-объекта в соответствующий файл.
+# Пример json-объекта:
+# [{"firm_1": 5000, "firm_2": 3000, "firm_3": 1000}, {"average_profit": 2000}]
+# Подсказка: использовать менеджеры контекста.
+
+print(30*'-', '\nЗадание 7')
+import json
+
+midd_profit = []
+dictionary = {}
+with open('DZ5-7.txt', encoding = 'utf-8') as f:
+    line = f.readlines()
+    for i in line:
+        name, form, revenue, costs = i.split()
+        print('У компании {} {} прибыль: {} рублей'.format(form, name, int(revenue)-int(costs)))
+        dictionary[name] = int(revenue)-int(costs)
+        if (int(revenue)-int(costs)) > 0:
+            midd_profit.append(int(revenue)-int(costs))
+
+print('Средняя прыбыль получилась {} рублей на компанию'.format(round(sum(midd_profit)/len(midd_profit))))
+print('\n',dictionary, {'средняя прибыль': (int(sum(midd_profit)/len(midd_profit)))})
+import_to_json = dictionary, {'средняя прибыль': (int(sum(midd_profit)/len(midd_profit)))}
+
+with open('new.json', 'w+', encoding = 'utf-8') as jj:
+    json.dump(import_to_json, jj)
+
+with open('new.json', encoding='utf-8') as Py:
+    print(f'Если переносить обратно: {json.load(Py)}')
